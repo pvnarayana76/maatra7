@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Akshara Alchemist - 3-Stage Forge</title>
+    <title>Akshara Alchemist - Expanded Edition</title>
     <style>
         :root { --bg: #0f172a; --blue: #38bdf8; --gold: #fbbf24; --white: #f1f5f9; --green: #4ade80; --red: #ef4444; }
         * { box-sizing: border-box; touch-action: none; -webkit-user-select: none; } 
@@ -21,25 +21,32 @@
         .score-box { background: rgba(56, 189, 248, 0.1); border: 1px solid var(--blue); padding: 4px 12px; border-radius: 20px; font-weight: bold; color: var(--green); font-size: 0.9rem; }
         
         #goal-area { text-align: center; height: 12%; display: flex; align-items: center; justify-content: center; }
-        #target-text { color: var(--gold); font-size: 2.2rem; font-weight: bold; border-bottom: 3px solid #334155; padding: 0 10px; }
+        #target-text { color: var(--gold); font-size: 2.2rem; font-weight: bold; border-bottom: 3px solid #334155; }
 
-        .game-grid { display: grid; grid-template-columns: 80px 1fr 80px; gap: 10px; height: 45%; align-items: center; }
-        
-        .bank { background: rgba(255,255,255,0.05); border: 1px solid var(--blue); border-radius: 12px; height: 100%; display: flex; flex-direction: column; align-items: center; padding: 5px; gap: 8px; overflow-y: auto; scroll-behavior: smooth; }
-        .bank::-webkit-scrollbar { width: 4px; }
-        .bank::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 4px; }
-        .bank h3 { font-size: 0.55rem; margin: 2px; color: var(--blue); position: sticky; top: 0; background: var(--bg); width: 100%; text-align: center; padding: 2px 0; z-index: 5; letter-spacing: 1px;}
+        .game-grid { display: grid; grid-template-columns: 80px 1fr 80px; gap: 10px; height: 50%; align-items: center; }
+        .bank { 
+            background: rgba(255,255,255,0.05); border: 1px solid var(--blue); border-radius: 12px;
+            height: 95%; display: flex; flex-direction: column; align-items: center; padding: 5px; gap: 8px; overflow-y: auto;
+        }
+        .bank h3 { font-size: 0.6rem; margin: 2px; color: var(--blue); }
 
         .forge-zone { display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        #forge-circle { width: 100px; height: 100px; border: 4px dashed var(--gold); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 2.8rem; background: rgba(251,191,36,0.05); transition: all 0.2s; }
+        #forge-circle {
+            width: 110px; height: 110px; border: 4px dashed var(--gold); border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; font-size: 3rem;
+            background: rgba(251,191,36,0.05); transition: all 0.2s;
+        }
 
         .shake { animation: shake 0.4s; border-color: var(--red) !important; background: rgba(239, 68, 68, 0.2) !important; }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
 
-        .tile { width: 60px; height: 60px; background: white; color: #1e293b; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 1.6rem; font-weight: bold; box-shadow: 0 4px 0 #94a3b8; flex-shrink: 0; cursor: grab; }
+        .tile {
+            width: 60px; height: 60px; background: white; color: #1e293b; border-radius: 10px;
+            display: flex; justify-content: center; align-items: center; font-size: 1.8rem; font-weight: bold;
+            box-shadow: 0 4px 0 #94a3b8; flex-shrink: 0; cursor: grab;
+        }
         .tile:active { cursor: grabbing; }
         .tile.m { background: var(--gold); box-shadow: 0 4px 0 #b45309; }
-        .tile.b { background: #fca5a5; box-shadow: 0 4px 0 #b91c1c; } /* Bindu styling */
 
         #msg { font-size: 0.8rem; color: var(--green); margin-top: 10px; height: 15px; font-weight: bold; text-align: center; }
         
@@ -51,10 +58,7 @@
         
         #tray-area { height: 15%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .word-tray { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-        .slot { width: 55px; height: 55px; border: 2px dashed #475569; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 1.4rem; background: rgba(0,0,0,0.2); }
-        
-        .hint-bar { height: 8%; display: flex; justify-content: center; align-items: center; font-size: 0.85rem; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); margin-top: 5px;}
-        .hint-bar span { color: var(--gold); font-weight: bold; margin: 0 5px; }
+        .slot { width: 65px; height: 65px; border: 2px dashed #475569; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 1.8rem; background: rgba(0,0,0,0.2); }
     </style>
 </head>
 <body>
@@ -63,9 +67,9 @@
     <header>
         <div class="dashboard">
             <div class="timer">⏱️ <span id="clock">00:00</span></div>
-            <div class="score-box">⭐ <span id="pts-scored">0</span> / <span id="pts-total">0</span></div>
+            <div class="score-box">⭐ SCORE: <span id="pts-scored">0</span> / <span id="pts-total">0</span></div>
         </div>
-        <select id="lvl" onchange="start()" style="margin-top: 8px; background:#1e293b; color:white; border:1px solid var(--blue); padding: 2px 5px; font-size: 0.8rem; border-radius: 4px;">
+        <select id="lvl" onchange="start()" style="margin-top:8px; background:#1e293b; color:white; border:1px solid var(--blue); padding: 2px 5px; font-size: 0.8rem; border-radius: 4px;">
             <option value="1">Level 1: Fusion Lab (1 Pt)</option>
             <option value="2">Level 2: Word Smith (2 Pts)</option>
         </select>
@@ -88,27 +92,15 @@
     </div>
 
     <div id="tray-area" class="hidden"><div class="word-tray" id="word-tray"></div></div>
-
-    <div class="hint-bar">
-        💡 क्+ष=<span>क्ष</span> | त्+र=<span>त्र</span> | ज्+ञ=<span>ज्ञ</span> | श्+र=<span>श्र</span>
-    </div>
 </div>
 
 <script>
-    // NEW STRUCTURE: 'b' added for Bindu memory
-    let bridge = { v: "", m: "", b: "", dType: "", dVal: "" };
+    let bridge = { v: "", m: "", dType: "", dVal: "" };
     let timer = 0, clockInterval = null, idx = 0;
     let currentList = []; 
-    let currentScore = 0, pointsPerWord = 1, maxPoints = 0;
-
-    // THE 3-STAGE BANKS
-    // (Removed pre-forged bindu syllables. Kept base vowels, standard consonants, joint consonants, and un-forgeable half letters)
-    const ALL_V = ['अ','आ','इ','ई','उ','ऊ','ऋ','ए','ऐ','ओ','औ','अं','क','ख','ग','घ','च','छ','ज','झ','ट','ठ','ड','ढ','ण','त','थ','द','ध','न','प','फ','ब','भ','म','य','र','ल','व','श','ष','स','ह','क्ष','त्र','ज्ञ','श्र','ड़','ढ़','प्या','र्च','म्ह'];
-    
-    // Matras separated from Bindus for logic, but both go in the right-side bank
-    const JUST_MATRAS = ['ा','ि','ी','ु','ू','ृ','े','ै','ो','ौ'];
-    const BINDUS = ['ं','ः','ँ'];
-    const ALL_M = [...JUST_MATRAS, ...BINDUS];
+    let currentScore = 0;
+    let pointsPerWord = 1;
+    let maxPoints = 0;
 
     function playSound(t) {
         const c = new (window.AudioContext || window.webkitAudioContext)();
@@ -119,64 +111,99 @@
     }
 
     function shuffle(array) {
-        let arr = [...array];
-        for (let i = arr.length - 1; i > 0; i--) {
+        for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [arr[i], arr[j]] = [arr[j], arr[i]];
+            [array[i], array[j]] = [array[j], array[i]];
         }
-        return arr;
+        return array;
     }
 
-    // LEVEL 1: Now includes 3-stage combinations to train them!
+    // EXPANDED DATA: Level 1 (Syllable Practice)
     const l1Data = [
-        {t:"ना"}, {t:"मि"}, {t:"के"}, {t:"ली"}, {t:"सा"}, {t:"चू"}, {t:"ड़"}, {t:"खि"}, {t:"फा"}, {t:"जा"}, 
-        {t:"री"}, {t:"भा"}, {t:"ष"}, {t:"कृ"}, {t:"बे"}, {t:"मै"}, {t:"धे"}, {t:"तै"}, {t:"रे"}, {t:"पै"}, 
-        {t:"मे"}, {t:"पौ"}, {t:"क्षी"}, {t:"त्रु"}, {t:"ज्ञा"}, {t:"श्रृ"}, {t:"भैं"}, {t:"पाँ"}, {t:"कुं"}
+        {t:"की",v:["क","ल","म"],m:["ा","ी"]}, {t:"पु",v:["प","स","ब"],m:["ु","ू"]}, {t:"दे",v:["द","म","र"],m:["े","ै"]},
+        {t:"मो",v:["म","न","त"],m:["ो","ौ"]}, {t:"रि",v:["र","ज","ल"],m:["ि","ी"]}, {t:"सा",v:["स","प","क"],m:["ा","ु"]},
+        {t:"नू",v:["न","त","म"],m:["ु","ू"]}, {t:"है",v:["ह","क","ब"],m:["े","ै"]}, {t:"चो",v:["च","ल","छ"],m:["ो","ौ"]},
+        {t:"बी",v:["ब","प","व"],m:["ि","ी"]}, {t:"टा",v:["ट","ड","ठ"],m:["ा","े"]}, {t:"गौ",v:["ग","ज","ध"],m:["ो","ौ"]},
+        {t:"खि",v:["ख","ग","घ"],m:["ि","ी"]}, {t:"पे",v:["प","ब","फ"],m:["े","ै"]}, {t:"धु",v:["ध","थ","द"],m:["ु","ू"]},
+        {t:"लै",v:["ल","व","र"],m:["े","ै"]}, {t:"नो",v:["न","म","प"],m:["ो","ा"]}, {t:"सी",v:["स","श","ष"],m:["ि","ी"]},
+        {t:"कृ",v:["क","भ","ग"],m:["ृ","ु"]}, {t:"थै",v:["थ","ट","त"],m:["े","ै"]}, {t:"जो",v:["ज","झ","छ"],m:["ो","ौ"]},
+        {t:"दू",v:["द","ब","ढ"],m:["ु","ू"]}, {t:"मी",v:["म","ल","न"],m:["ि","ी"]}, {t:"रा",v:["र","त","स"],m:["ा","ि"]}, 
+        {t:"फू",v:["फ","प","ब"],m:["ु","ू"]}, {t:"ना",v:["न","म","ल"],m:["ा","े"]}, {t:"सू",v:["स","श","र"],m:["ू","ु"]},
+        {t:"टी",v:["ट","ठ","ड"],m:["ी","ि"]}, {t:"भै",v:["भ","ब","म"],m:["ै","े"]}, {t:"लौ",v:["ल","व","र"],m:["ौ","ो"]}
     ];
 
-    // LEVEL 2: All 139 Words
+    // EXPANDED DATA: Level 2 (Curated Distractors, Perfect Formatting)
     const l2Data = [
-        {w:"नमन", p:["न","म","न"]}, {w:"आरा", p:["आ","रा"]}, {w:"अनार", p:["अ","ना","र"]}, {w:"आम", p:["आ","म"]},
-        {w:"इमली", p:["इ","म","ली"]}, {w:"मीन", p:["मी","न"]}, {w:"ईख", p:["ई","ख"]}, {w:"किसान", p:["कि","सा","न"]},
-        {w:"नीम", p:["नी","म"]}, {w:"कीला", p:["की","ला"]}, {w:"सिर", p:["सि","र"]}, {w:"कमल", p:["क","म","ल"]},
-        {w:"कुसुम", p:["कु","सु","म"]}, {w:"मूली", p:["मू","ली"]}, {w:"सुई", p:["सु","ई"]}, {w:"आलू", p:["आ","लू"]},
-        {w:"लड़का", p:["ल","ड़","का"]}, {w:"डमरू", p:["ड","म","रू"]}, {w:"कछुआ", p:["क","छु","आ"]}, {w:"चूड़ी", p:["चू","ड़ी"]},
-        {w:"उमरा", p:["उ","म","रा"]}, {w:"ऊन", p:["ऊ","न"]}, {w:"चामर", p:["चा","म","र"]}, {w:"डाली", p:["डा","ली"]},
-        {w:"खिड़की", p:["खि","ड़","की"]}, {w:"फाटक", p:["फा","ट","क"]}, {w:"जाल", p:["जा","ल"]}, {w:"बकरी", p:["ब","क","री"]},
-        {w:"भालू", p:["भा","लू"]}, {w:"षटभुज", p:["ष","ट","भु","ज"]}, {w:"ऋषभ", p:["ऋ","ष","भ"]}, {w:"कृषक", p:["कृ","ष","क"]},
-        {w:"ऋषि", p:["ऋ","षि"]}, {w:"बेलन", p:["बे","ल","न"]}, {w:"मैना", p:["मै","ना"]}, {w:"नैनन", p:["नै","न","न"]},
-        {w:"धेनु", p:["धे","नु"]}, {w:"केकड़ा", p:["के","क","ड़ा"]}, {w:"तैराक", p:["तै","रा","क"]}, {w:"रेल", p:["रे","ल"]},
-        {w:"पैर", p:["पै","र"]}, {w:"मेज", p:["मे","ज"]}, {w:"पैसे", p:["पै","से"]}, {w:"केला", p:["के","ला"]},
-        {w:"झोपड़ी", p:["झो","प","ड़ी"]}, {w:"झष", p:["झ","ष"]}, {w:"मोर", p:["मो","र"]}, {w:"गौतम", p:["गौ","त","म"]},
-        {w:"कोयल", p:["को","य","ल"]}, {w:"पौधा", p:["पौ","धा"]}, {w:"औरत", p:["औ","र","त"]}, {w:"तौलिया", p:["तौ","लि","या"]},
-        {w:"पक्षी", p:["प","क्षी"]}, {w:"त्रिकोण", p:["त्रि","को","ण"]}, {w:"नेत्र", p:["ने","त्र"]}, {w:"यज्ञ", p:["य","ज्ञ"]},
-        {w:"अश्रु", p:["अ","श्रु"]}, {w:"वृक्ष", p:["वृ","क्ष"]}, {w:"श्रमिक", p:["श्र","मि","क"]}, {w:"ज्ञानी", p:["ज्ञा","नी"]},
-        {w:"छत्र", p:["छ","त्र"]}, {w:"नक्षत्र", p:["न","क्ष","त्र"]}, {w:"त्रिशूल", p:["त्रि","शू","ल"]}, {w:"पत्र", p:["प","त्र"]},
-        {w:"गमला", p:["ग","म","ला"]}, {w:"खिलौना", p:["खि","लौ","ना"]}, {w:"अंगूठी", p:["अं","गू","ठी"]}, {w:"चूड़ियाँ", p:["चू","ड़ि","याँ"]},
-        {w:"उपहार", p:["उ","प","हा","र"]}, {w:"दादा-दादी", p:["दा","दा","दा","दी"]}, {w:"मिठाइयाँ", p:["मि","ठा","इ","याँ"]},
-        {w:"एक", p:["ए","क"]}, {w:"दो", p:["दो"]}, {w:"तीन", p:["ती","न"]}, {w:"चार", p:["चा","र"]}, {w:"पाँच", p:["पाँ","च"]},
-        {w:"छह", p:["छ","ह"]}, {w:"सात", p:["सा","त"]}, {w:"आठ", p:["आ","ठ"]}, {w:"नौ", p:["नौ"]}, {w:"दस", p:["द","स"]},
-        {w:"सफेद", p:["स","फे","द"]}, {w:"लाल", p:["ला","ल"]}, {w:"केसरिया", p:["के","स","रि","या"]}, {w:"नीला", p:["नी","ला"]},
-        {w:"काला", p:["का","ला"]}, {w:"बैंगनी", p:["बैं","ग","नी"]}, {w:"पीला", p:["पी","ला"]}, {w:"हरा", p:["ह","रा"]},
-        {w:"गुलाबी", p:["गु","ला","बी"]}, {w:"बाघ", p:["बा","घ"]}, {w:"हाथी", p:["हा","थी"]}, {w:"खरगोश", p:["ख","र","गो","श"]},
-        {w:"भैंस", p:["भैं","स"]}, {w:"गधा", p:["ग","धा"]}, {w:"कौआ", p:["कौ","आ"]}, {w:"कबूतर", p:["क","बू","त","र"]},
-        {w:"तोता", p:["तो","ता"]}, {w:"गौरैया", p:["गौ","रै","या"]}, {w:"चील", p:["ची","ल"]}, {w:"प्याज", p:["प्या","ज"]},
-        {w:"मिर्च", p:["मि","र्च"]}, {w:"टमाटर", p:["ट","मा","ट","र"]}, {w:"तुरई", p:["तु","र","ई"]}, {w:"बैंगन", p:["बैं","ग","न"]},
-        {w:"मटर", p:["म","ट","र"]}, {w:"भिंडी", p:["भिं","डी"]}, {w:"लौकी", p:["लौ","की"]}, {w:"अदरक", p:["अ","द","र","क"]},
-        {w:"सेम", p:["से","म"]}, {w:"ककड़ी", p:["क","क","ड़ी"]}, {w:"करेला", p:["क","रे","ला"]}, {w:"कुंदरू", p:["कुं","द","रू"]},
-        {w:"चिचिंडा", p:["चि","चिं","डा"]}, {w:"शकरकंद", p:["श","क","र","कं","द"]}, {w:"फूल गोभी", p:["फू","ल","गो","भी"]},
-        {w:"बंद गोभी", p:["बं","द","गो","भी"]}, {w:"सहजन", p:["स","ह","ज","न"]}, {w:"गाजर", p:["गा","ज","र"]}, {w:"पालक", p:["पा","ल","क"]},
-        {w:"चौलाई", p:["चौ","ला","ई"]}, {w:"हरी धनिया", p:["ह","री","ध","नि","या"]}, {w:"मीठा नीम", p:["मी","ठा","नी","म"]},
-        {w:"लहसुन", p:["ल","ह","सु","न"]}, {w:"कुम्हड़ा", p:["कु","म्ह","ड़ा"]}, {w:"गुलाब", p:["गु","ला","ब"]},
-        {w:"केवड़ा", p:["के","व","ड़ा"]}, {w:"चमेली", p:["च","मे","ली"]}, {w:"चंपा", p:["चं","पा"]}, {w:"जूही", p:["जू","ही"]},
-        {w:"गुड़हल", p:["गु","ड़","ह","ल"]}, {w:"गेंदा", p:["गें","दा"]}, {w:"पारिजात", p:["पा","रि","जा","त"]}, {w:"सूरज मुखी", p:["सू","र","ज","मु","खी"]}
+        {w:"किताब", p:["कि","ता","ब"], v:["क","त","ब","ल"], m:["ि","ा","ी"]},
+        {w:"मछली", p:["म","छ","ली"], v:["म","छ","ल","क"], m:["ी","ि","ा"]},
+        {w:"अनार", p:["अ","ना","र"], v:["अ","न","र","म"], m:["ा","े"]},
+        {w:"गुलाब", p:["गु","ला","ब"], v:["ग","ल","ब","च"], m:["ु","ा","ू"]},
+        {w:"पेड़", p:["पे","ड़"], v:["प","ड़","त"], m:["े","ै"]},
+        {w:"सूरज", p:["सू","र","ज"], v:["स","र","ज","न"], m:["ू","ु","ा"]},
+        {w:"टोपी", p:["टो","पी"], v:["ट","प","क"], m:["ो","ी","ौ"]},
+        {w:"पौधा", p:["पौ","धा"], v:["प","ध","ब"], m:["ौ","ा","ो"]},
+        {w:"हाथी", p:["हा","थी"], v:["ह","थ","म"], m:["ा","ी","ि"]},
+        {w:"चिड़िया", p:["चि","ड़ि","या"], v:["च","ड़","य","क"], m:["ि","ा","ी"]},
+        {w:"रेल", p:["रे","ल"], v:["र","ल","म"], m:["े","ै"]},
+        {w:"बैल", p:["बै","ल"], v:["ब","ल","त"], m:["ै","े"]},
+        {w:"कौआ", p:["कौ","आ"], v:["क","आ","म"], m:["ौ","ो"]},
+        {w:"माला", p:["मा","ला"], v:["म","ल","न"], m:["ा","ी"]},
+        {w:"साधु", p:["सा","धु"], v:["स","ध","र"], m:["ा","ु","ू"]},
+        {w:"जूता", p:["जू","ता"], v:["ज","त","ल"], m:["ू","ा","ु"]},
+        {w:"केला", p:["के","ला"], v:["क","ल","ब"], m:["े","ा","ै"]},
+        {w:"सैनिक", p:["सै","नि","क"], v:["स","न","क","म"], m:["ै","ि","े"]},
+        {w:"मोर", p:["मो","र"], v:["म","र","ल"], m:["ो","ौ"]},
+        {w:"कृषि", p:["कृ","षि"], v:["क","ष","प"], m:["ृ","ि","ी"]},
+        {w:"सेब", p:["से","ब"], v:["स","ब","म"], m:["े","ै"]},
+        {w:"पैसा", p:["पै","सा"], v:["प","स","न"], m:["ै","ा","े"]},
+        {w:"ढोल", p:["ढो","ल"], v:["ढ","ल","ड"], m:["ो","ौ"]},
+        {w:"नौका", p:["नौ","का"], v:["न","क","म"], m:["ौ","ा","ो"]},
+        {w:"वृक्ष", p:["वृ","क्ष"], v:["व","क्ष","ब"], m:["ृ","ु"]},
+        {w:"भालू", p:["भा","लू"], v:["भ","ल","क"], m:["ा","ू","ु"]},
+        {w:"शेर", p:["शे","र"], v:["श","र","त"], m:["े","ै"]},
+        {w:"गाय", p:["गा","य"], v:["ग","य","न"], m:["ा","ी"]},
+        {w:"ताला", p:["ता","ला"], v:["त","ल","म"], m:["ा","े"]},
+        {w:"चाबी", p:["चा","बी"], v:["च","ब","क"], m:["ा","ी","ि"]},
+        {w:"आलू", p:["आ","लू"], v:["आ","ल","प"], m:["ू","ु","ा"]},
+        {w:"मूली", p:["मू","ली"], v:["म","ल","न"], m:["ू","ी","ु"]},
+        {w:"गोभी", p:["गो","भी"], v:["ग","भ","स"], m:["ो","ी","ौ"]},
+        {w:"हिरण", p:["हि","र","ण"], v:["ह","र","ण","क"], m:["ि","ी"]},
+        {w:"छाता", p:["छा","ता"], v:["छ","त","ल"], m:["ा","े"]},
+        {w:"पानी", p:["पा","नी"], v:["प","न","म"], m:["ा","ी","ि"]},
+        {w:"आग", p:["आ","ग"], v:["आ","ग","र"], m:["ा","ी"]},
+        {w:"दूध", p:["दू","ध"], v:["द","ध","ब"], m:["ू","ु"]},
+        {w:"दही", p:["द","ही"], v:["द","ह","प"], m:["ी","ि"]},
+        {w:"पूरी", p:["पू","री"], v:["प","र","त"], m:["ू","ी","ु"]},
+        {w:"आम", p:["आ","म"], v:["आ","म","न"], m:["ा","ी"]},
+        {w:"नमन", p:["न","म","न"], v:["न","म","र"], m:["ा","ि"]},
+        {w:"मीन", p:["मी","न"], v:["म","न","ल"], m:["ी","ि"]},
+        {w:"ईख", p:["ई","ख"], v:["ई","ख","ग"], m:["ी","ा"]},
+        {w:"कमल", p:["क","म","ल"], v:["क","म","ल","न"], m:["ा","े"]},
+        {w:"लड़का", p:["ल","ड़","का"], v:["ल","ड़","क","र"], m:["ा","ी"]},
+        {w:"डमरू", p:["ड","म","रू"], v:["ड","म","र","त"], m:["ू","ु"]},
+        {w:"जाल", p:["जा","ल"], v:["ज","ल","र"], m:["ा","े"]},
+        {w:"बेलन", p:["बे","ल","न"], v:["ब","ल","न","म"], m:["े","ै"]},
+        {w:"मेज", p:["मे","ज"], v:["म","ज","ल"], m:["े","ै"]},
+        {w:"औरत", p:["औ","र","त"], v:["औ","र","त","न"], m:["ौ","ो"]},
+        {w:"गमला", p:["ग","म","ला"], v:["ग","म","ल","न"], m:["ा","े"]},
+        {w:"सफेद", p:["स","फे","द"], v:["स","फ","द","र"], m:["े","ै"]},
+        {w:"हरा", p:["ह","रा"], v:["ह","र","ल"], m:["ा","ी"]},
+        {w:"नीला", p:["नी","ला"], v:["न","ल","म"], m:["ी","ा","ि"]},
+        {w:"काला", p:["का","ला"], v:["क","ल","म"], m:["ा","ी"]},
+        {w:"मटर", p:["म","ट","र"], v:["म","ट","र","क"], m:["ा","े"]},
+        {w:"लौकी", p:["लौ","की"], v:["ल","क","म"], m:["ौ","ी","ो"]},
+        {w:"अदरक", p:["अ","द","र","क"], v:["अ","द","र","क","म"], m:["ा","ी"]},
+        {w:"गाजर", p:["गा","ज","र"], v:["ग","ज","र","ल"], m:["ा","े"]}
     ];
 
     function start() {
-        idx = 0; currentScore = 0; 
+        idx = 0; 
+        currentScore = 0; 
         const lvl = document.getElementById('lvl').value;
         pointsPerWord = (lvl == "1") ? 1 : 2;
-        currentList = shuffle(lvl == "1" ? l1Data : l2Data);
+        
+        // Shuffle the list of tasks so the order changes every time
+        currentList = shuffle([...(lvl == "1" ? l1Data : l2Data)]);
         maxPoints = currentList.length * pointsPerWord;
         
         document.getElementById('pts-scored').innerText = currentScore;
@@ -197,26 +224,19 @@
         const d = currentList[idx]; 
         
         document.getElementById('target-text').innerText = (lvl == "1") ? d.t : d.w;
+        
         document.getElementById('next-btn').classList.add('hidden');
         document.getElementById('skip-btn').classList.remove('hidden');
         document.getElementById('msg').innerText = "Drag a Vyanjan";
-        
-        // FULL RESET OF FORGE MEMORY
-        bridge.v = ""; bridge.m = ""; bridge.b = "";
+        bridge.v = ""; bridge.m = "";
         document.getElementById('forge-circle').innerText = "?";
         
-        const shuffledV = shuffle(ALL_V);
-        const shuffledM = shuffle(ALL_M);
-
+        // Populate specific banks for THIS word only
         document.getElementById('v-bank').innerHTML = "<h3>VYANJAN</h3>";
-        shuffledV.forEach(v => document.getElementById('v-bank').innerHTML += `<div class="tile" draggable="true" ondragstart="hDS(event, '${v}','v')">${v}</div>`);
+        d.v.forEach(v => document.getElementById('v-bank').innerHTML += `<div class="tile" draggable="true" ondragstart="hDS(event, '${v}','v')">${v}</div>`);
         
-        document.getElementById('m-bank').innerHTML = "<h3>MATRA & BINDU</h3>";
-        shuffledM.forEach(m => {
-            // Check if it's a matra ('m') or bindu ('b') to assign the correct drag logic and color class
-            const type = BINDUS.includes(m) ? 'b' : 'm';
-            document.getElementById('m-bank').innerHTML += `<div class="tile ${type}" draggable="true" ondragstart="hDS(event, '${m}','${type}')">${m}</div>`;
-        });
+        document.getElementById('m-bank').innerHTML = "<h3>MATRA</h3>";
+        d.m.forEach(m => document.getElementById('m-bank').innerHTML += `<div class="tile m" draggable="true" ondragstart="hDS(event, '${m}','m')">${m}</div>`);
         
         const trayA = document.getElementById('tray-area');
         if(lvl == "2") {
@@ -227,61 +247,40 @@
 
     function allowDrop(e) { e.preventDefault(); }
 
-    function hDS(e, val, type) { 
-        e.dataTransfer.setData('text/plain', val);
-        bridge.dVal = val; 
-        bridge.dType = type; 
+    function hDS(e, v, t) { 
+        e.dataTransfer.setData('text/plain', v);
+        bridge.dVal = v; 
+        bridge.dType = t; 
     }
     
     function handleForgeDrag(e) { 
-        // Force the combination into perfect Unicode order: Vyanjan + Matra + Bindu
-        const forgedText = bridge.v + bridge.m + bridge.b;
-        e.dataTransfer.setData('text/plain', forgedText);
-        bridge.dVal = forgedText; 
+        e.dataTransfer.setData('text/plain', bridge.v + bridge.m);
+        bridge.dVal = bridge.v + bridge.m; 
         bridge.dType = "f"; 
     }
 
     function handleDrop(e) {
         e.preventDefault(); const c = document.getElementById('forge-circle'); c.classList.remove('shake');
-        
-        if (bridge.dType === 'v') { 
-            // Dropping a Vyanjan resets everything
-            bridge.v = bridge.dVal; bridge.m = ""; bridge.b = ""; 
-            c.innerText = bridge.v; 
-            document.getElementById('msg').innerText = "Add Matra or Bindu"; 
-        } 
+        if (bridge.dType === 'v') { bridge.v = bridge.dVal; bridge.m = ""; c.innerText = bridge.v; document.getElementById('msg').innerText = "Now add Matra"; }
         else if (bridge.dType === 'm' && bridge.v !== "") {
-            // Dropping a Matra updates the 'm' layer
-            bridge.m = bridge.dVal; 
-            c.innerText = bridge.v + bridge.m + bridge.b;
-            checkL1Win(c.innerText);
-        }
-        else if (bridge.dType === 'b' && bridge.v !== "") {
-            // Dropping a Bindu updates the 'b' layer
-            bridge.b = bridge.dVal; 
-            c.innerText = bridge.v + bridge.m + bridge.b;
-            checkL1Win(c.innerText);
-        }
-    }
-
-    function checkL1Win(currentForgeText) {
-        if (document.getElementById('lvl').value == "1") {
-            if (currentForgeText === currentList[idx].t) victory(); 
+            bridge.m = bridge.dVal; c.innerText = bridge.v + bridge.m;
+            if (document.getElementById('lvl').value == "1") {
+                if (c.innerText === currentList[idx].t) victory(); 
+                else triggerError(c, true);
+            }
         }
     }
 
     function hTD(e, target) {
         e.preventDefault(); 
         const droppedText = bridge.dVal; 
-        const isBaseSyllable = ALL_V.includes(target);
         
-        if (droppedText === target && (bridge.dType === "f" || isBaseSyllable)) {
+        if (droppedText === target) {
             e.target.innerText = droppedText; 
             e.target.style.background = "rgba(74, 222, 128, 0.2)"; 
             e.target.style.borderColor = "var(--green)";
             
-            bridge.v = ""; bridge.m = ""; bridge.b = ""; 
-            document.getElementById('forge-circle').innerText = "?";
+            bridge.v = ""; bridge.m = ""; document.getElementById('forge-circle').innerText = "?";
             document.getElementById('msg').innerText = "Drag a Vyanjan";
             
             const slots = [...document.querySelectorAll('.slot')];
@@ -296,7 +295,7 @@
         setTimeout(() => {
             el.classList.remove('shake');
             if(wipe) { 
-                bridge.v = ""; bridge.m = ""; bridge.b = ""; 
+                bridge.v = ""; bridge.m = ""; 
                 document.getElementById('forge-circle').innerText = "?"; 
                 document.getElementById('msg').innerText = "Failed!"; 
             }
